@@ -34,7 +34,7 @@ source "virtualbox-iso" "k3os" {
     "<down>", "<enter>",
     "<wait20s>",
     "y", "<enter>",
-    "http://{{ .HTTPIP }}:{{ .HTTPPort }}/config.yml", "<enter>",
+    "http://{{ .HTTPIP }}:{{ .HTTPPort }}/master-config.yml", "<enter>",
     "y", "<enter>",
   ]
   boot_wait            = "5s"
@@ -74,6 +74,6 @@ build {
     execute_command = "{{.Vars}} bash '{{.Path}}'"
   }
   post-processor "vagrant" {
-    output = "k3os_{{.Provider}}.box"
+    output = "master_k3os_{{.Provider}}.box"
   }
 }
