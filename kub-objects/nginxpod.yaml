@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  schedulerName: newone
+  containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - name: http
+          containerPort: 80

@@ -1,7 +1,7 @@
 
 variable "box_description" {
   type    = string
-  default = "k3OS(Master) is a Linux distribution designed to remove as much OS maintenance as possible in a Kubernetes cluster"
+  default = "k3OS(Agent) is a Linux distribution designed to remove as much OS maintenance as possible in a Kubernetes cluster"
 }
 
 variable "box_version" {
@@ -34,7 +34,7 @@ source "virtualbox-iso" "k3os" {
     "<down>", "<enter>",
     "<wait20s>",
     "y", "<enter>",
-    "http://{{ .HTTPIP }}:{{ .HTTPPort }}/master-config.yml", "<enter>",
+    "http://{{ .HTTPIP }}:{{ .HTTPPort }}/agent-config.yml", "<enter>",
     "y", "<enter>",
   ]
   boot_wait            = "5s"
@@ -55,36 +55,23 @@ source "virtualbox-iso" "k3os" {
   ssh_username         = "rancher"
   guest_additions_mode = "disable"
   vboxmanage = [
-   ["modifyvm", "{{.Name}}", "--memory", "2048"],
+   ["modifyvm", "{{.Name}}", "--memory", "1024"],
    ["modifyvm", "{{.Name}}", "--cpus", "1"]
 ]
 }
 
 build {
   sources = ["source.virtualbox-iso.k3os"]
-  provisioner "file" {
-  source = "master-images.tar"
-  destination = "~/master-images.tar"
-  }
-  provisioner "file" {
-  source = "./kubernetes-node-exporter"
-  destination = "~"
-  }
-  provisioner "file" {
-  source = "./kub-objects"
-  destination = "~"
-  }
-  provisioner "shell" {
+#  provisioner "file" {
+#  source = "agent-images.tar"
+#  destination = "~/agent-images.tar"
+#  }
+provisioner "shell" {
     execute_command = "{{.Vars}} bash '{{.Path}}'"
-    inline = ["sudo bash -c \"echo -e 'write_files:\n- path: /var/lib/connman/default.config\n  content: |-\n    [service_eth0]\n    Type=ethernet\n    IPv4=192.168.1.200/255.255.255.0/192.168.1.1\n    Ipv6=off\n    Nameservers=192.168.1.1\n' > /var/lib/rancher/k3os/config.yaml\"",
-              "sudo ctr images import ~/master-images.tar",
-              "sudo rm ~/master-images.tar",
-              "kubectl create ns monitoring",
-              "kubectl apply -f ~/kub-objects/rbac_scheduler.yaml -f ~/kubernetes-node-exporter",
-              "sudo bash -c \"echo -e '#!/bin/bash\nsudo poweroff' > /usr/local/bin/shutdown \"",
+    inline = ["sudo bash -c \"echo -e '#!/bin/bash\nsudo poweroff' > /usr/local/bin/shutdown \"",
               "sudo chmod 755 /usr/local/bin/shutdown"]
   }
   post-processor "vagrant" {
-    output = "master_k3os_{{.Provider}}.box"
+    output = "agent_k3os_{{.Provider}}.box"
   }
 }

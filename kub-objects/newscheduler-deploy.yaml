@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: new-scheduler
+    tier: control-plane
+  name: new-custom-scheduler
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      component: new-scheduler
+      tier: control-plane
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: new-scheduler
+        tier: control-plane
+    spec:
+      serviceAccountName: newscheduler-account
+      containers:
+      - image: ranhema/newscheduler:v1
+        name: new-custom-scheduler
