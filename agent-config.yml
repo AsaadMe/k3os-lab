@@ -3,6 +3,7 @@ run_cmd:
 - "sudo sed -e '/^rancher/p' -e 's/^rancher/vagrant/' -i /etc/passwd"
 - "sudo sed -e '/^rancher/p' -e 's/^rancher/vagrant/' -i /etc/group"
 - "sudo sed -i 's/PasswordAuthentication.*no/PasswordAuthentication yes/' /etc/ssh/sshd_config"
+- "sudo sed -i 's/timeout=.*/timeout=0/' /boot/grub/grub.cfg"
 ssh_authorized_keys:
 # Packer key
 - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCm4mvO91LnMIEusfofrsICXdh3eirAuA/z+YX6CDNLuL0O7tZvaCC6g8J2F5bGCTB7qsAzTamDC1p9i6vJJKvzOvkpYiLrugI0f59EERBxudGUw6hsBaDaFgMMH+UQdlg3HKSA34uXEgIzo0HgPCVjw1IT9yLiBRXcb55CKi0l9fQbreC4DDUKl/VX+CVtw2Z8cUx+IxbYet0ehpS6dXqsDoYpSRayrNgSD69Ty+DjINgvzKHog6PMtxC+pghPwztx0GM3fITOkQC9lZfrFxmRfoyWyHcASr9KPBmtPPfKyyQ3SWQAjQ8rEV13i0T4WEUCMqY26PBUZwC5qE5YUyGT
@@ -17,3 +18,4 @@ k3os:
   k3s_args:
   - agent
   - "--flannel-iface=eth1"
+  - "--with-node-id"

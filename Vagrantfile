@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  (1..1).each do |i|
+  (1..7).each do |i|
     config.vm.define "agent-#{i}" do |agent|
       agent.vm.box = "./agent_k3os_virtualbox.box"
       agent.vm.network "public_network", bridge: "Killer E2200 Gigabit Ethernet Controller", adapter: "2", auto_config: false

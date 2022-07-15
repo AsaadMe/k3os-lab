@@ -19,6 +19,7 @@ Create K3OS cluster in virtualbox using packer and vagrant.
 - make sure use `https://<server-ip>:6443` in agent-config.yml for agents.
 - using 1024MB memory for server node in VBox in vagrantfile.
 - using Bridge network for nodes in vagrantfile but also using NAT as eth0 for agents so vagrant could ssh into.
+- changed grub timeout to 0 (in *config.yml) for faster vagrant bootup.
 - k3s services logs: /var/log/k3s.log
 
 ### Access k8s API Inside cluster for test:
