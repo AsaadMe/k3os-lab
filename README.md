@@ -14,6 +14,7 @@ Create K3OS cluster in virtualbox using packer and vagrant.
 - server node has `layer=fog` label inside kubernetes. agents will have `layer=edge` label.
 - using v0.21.5-k3s2r1 version of k3os.
 - all needed images for k3s exported to `master-images.tar` and will be imported in post-process phase of packer build but is not present in this git.
+- create `master-images.tar` with `sudo ctr images export master-images.tar [image names]` and then put it beside hcl file or comment provision lines in hcl file related to import images into k3os.
 - `rtc_time_base = UTC` setting in packer config solved kubernetes certificate problem after booted with vagrant.
 - server has static ip = 192.168.1.200 (set in master-config.yml).
 - make sure use `https://<server-ip>:6443` in agent-config.yml for agents.
@@ -24,7 +25,7 @@ Create K3OS cluster in virtualbox using packer and vagrant.
 
 ### Access k8s API Inside cluster for test:
 1. apply RBAC file to have permissions.
-2. > kubectl run -it --rm debug --image=ranhema/newscheduler:v1 -n kube-system --overrides='{ "spec": { "serviceAccount": "newscheduler-account" }  }' -- bash
+2. > kubectl run -it --rm debug --image=[image-name] -n kube-system --overrides='{ "spec": { "serviceAccount": "account" }  }' -- bash
 3. in python:
     > from kubernetes import client, config; config.load_incluster_config(); v1 = client.CoreV1Api()
  

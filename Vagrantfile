@@ -24,8 +24,6 @@ Vagrant.configure("2") do |config|
     config.vm.define "agent-#{i}" do |agent|
       agent.vm.box = "./agent_k3os_virtualbox.box"
       agent.vm.network "public_network", bridge: "Killer E2200 Gigabit Ethernet Controller", adapter: "2", auto_config: false
-      # config.ssh.forward_agent = true
-      # config.vm.network "forwarded_port", guest: 22, host: 2223, protocol: "tcp", auto_correct: true
       agent.vm.provider "virtualbox" do |vb|
         vb.memory = "512"
         vb.cpus = "1"
